@@ -124,7 +124,16 @@ add_stylesheet('<link rel="stylesheet" href="'.$board_skin_url.'/style.css">', 0
             <div id="char_count_wrap"><span id="char_count"></span>글자</div>
             <?php } ?>
         </div>
-        
+    </div>
+
+    <div class="bo_w_date write_div">
+        <label for="wr_opentime"><i class="fa fa-calendar-plus-o" aria-hidden="true"></i><span class="sound_only"> 게시일  #<?php echo $i ?></span></label>
+        <input type="datetime-local" name="wr_opentime" value="<?php if($w=="u"){ echo date('Y-m-d\TH:i', strtotime($write['wr_opentime'] )); } ?>" id="wr_opentime" class="frm_input full_input" size="50">
+    </div>
+
+    <div class="bo_w_date write_div">
+        <label for="wr_closetime"><i class="fa fa-calendar-minus-o" aria-hidden="true"></i><span class="sound_only"> 종료일  #<?php echo $i ?></span></label>
+        <input type="datetime-local" name="wr_closetime" value="<?php if($w=="u"){ echo date('Y-m-d\TH:i', strtotime($write['wr_closetime'])); } ?>" id="wr_closetime" class="frm_input full_input" size="50">
     </div>
 
     <?php for ($i=1; $is_link && $i<=G5_LINK_COUNT; $i++) { ?>

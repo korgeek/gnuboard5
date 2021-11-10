@@ -59,6 +59,41 @@ if (isset($_POST['wr_link2'])) {
     $wr_link2 = preg_replace("#[\\\]+$#", "", $wr_link2);
 }
 
+
+$wr_opentime = '';
+if (isset($_POST['wr_opentime']) && !empty($_POST['wr_opentime'])) {
+    try {
+        $wr_opentime = date('Y-m-d H:i:s', strtotime($_POST['wr_opentime']));
+    } catch (Exception $e) {
+        error_log("wr_opentime exception: ".$e->getMessage());
+    }
+}
+if(empty($wr_opentime)){
+    $wr_opentime = date('Y-m-d H:i:s');
+}
+
+$wr_closetime = '';
+if (isset($_POST['wr_closetime']) && !empty($_POST['wr_closetime'])) {
+    try {
+        $wr_closetime = date('Y-m-d H:i:s', strtotime($_POST['wr_closetime']));
+    } catch (Exception $e) {
+        error_log("wr_closetime exception: ".$e->getMessage());
+    }
+}
+if(empty($wr_closetime)){
+    $wr_closetime = date('Y-m-d H:i:s', strtotime('2999-12-31'));
+}
+
+$wr_loc_lat = '';
+$wr_loc_long = '';
+if (isset($_POST['wr_loc_lat']) && isset($_POST['wr_loc_long']) && is_numeric($_POST['wr_loc_lat']) && is_numeric($_POST['wr_loc_long']) ) {
+    $wr_loc_lat = floatval($_POST['wr_loc_lat']);
+    $wr_loc_long = floatval($_POST['wr_loc_long']);
+}
+
+
+
+
 $msg = implode('<br>', $msg);
 if ($msg) {
     alert($msg);
@@ -287,6 +322,15 @@ if ($w == '' || $w == 'r') {
                      wr_8 = '$wr_8',
                      wr_9 = '$wr_9',
                      wr_10 = '$wr_10' ";
+
+    if(!empty($wr_opentime)){
+        $sql = $sql." , wr_opentime = '$wr_opentime' ";
+    }
+
+    if(!empty($wr_closetime)){
+        $sql = $sql." , wr_closetime = '$wr_closetime' ";
+    }
+
     sql_query($sql);
 
     $wr_id = sql_insert_id();
@@ -378,6 +422,16 @@ if ($w == '' || $w == 'r') {
     if (!$is_admin)
         $sql_ip = " , wr_ip = '{$_SERVER['REMOTE_ADDR']}' ";
 
+
+    $document_time = '';
+    if(!empty($wr_opentime)){
+        $document_time = $document_time." , wr_opentime = '{$wr_opentime}' ";
+    }
+
+    if(!empty($wr_closetime)){
+        $document_time = $document_time." , wr_closetime = '{$wr_closetime}' ";
+    }
+
     $sql = " update {$write_table}
                 set ca_name = '{$ca_name}',
                      wr_option = '{$html},{$secret},{$mail}',
@@ -400,6 +454,7 @@ if ($w == '' || $w == 'r') {
                      wr_8 = '{$wr_8}',
                      wr_9 = '{$wr_9}',
                      wr_10= '{$wr_10}'
+                     {$document_time}
                      {$sql_ip}
                      {$sql_password}
               where wr_id = '{$wr['wr_id']}' ";

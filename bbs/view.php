@@ -140,6 +140,20 @@ if ($board['bo_use_signature'] && $view['mb_id']) {
     $signature = conv_content($signature, 1);
 }
 
+if(!$is_admin){
+
+    if( time() < strtotime($view['wr_opentime']) ){
+        $view['wr_subject'] = "관리자에 의해 열람 시간이 설정된 게시물 입니다.";
+        $view['content'] = "본문 열람이 제한되어 있습니다. 관리자는 로그인 후 확인 가능합니다. (게시일 ".date('Y-m-d H:i', strtotime($view['wr_opentime'] )).")";
+    }
+
+    if( time() > strtotime($view['wr_closetime']) ){
+        $view['wr_subject'] = "관리자에 의해 열람 시간이 설정된 게시물 입니다.";
+        $view['content'] = "본문 열람이 제한되어 있습니다. 관리자는 로그인 후 확인 가능합니다. (마감일 ".date('Y-m-d H:i', strtotime($view['wr_closetime'] )).")";
+    }
+
+}
+
 include_once($board_skin_path.'/view.skin.php');
 
 @include_once($board_skin_path.'/view.tail.skin.php');

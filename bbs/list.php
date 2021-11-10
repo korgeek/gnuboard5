@@ -1,6 +1,10 @@
 <?php
 if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 
+$sql_for_date = " and now() between wr_opentime and wr_closetime ";
+if($is_admin) $sql_for_date = "";
+
+
 // 분류 사용 여부
 $is_category = false;
 $category_option = '';
@@ -47,7 +51,7 @@ if ($sca || $stx || $stx === '0') {     //검색이면
 
     if (!$spt) $spt = $min_spt;
 
-    $sql_search .= " and (wr_num between {$spt} and ({$spt} + {$config['cf_search_part']})) ";
+    $sql_search .= $sql_for_date." and (wr_num between {$spt} and ({$spt} + {$config['cf_search_part']})) ";
 
     // 원글만 얻는다. (코멘트의 내용도 검색하기 위함)
     // 라엘님 제안 코드로 대체 http://sir.kr/g5_bug/2922
@@ -94,7 +98,7 @@ if (!$is_search_bbs) {
     for ($k=0; $k<$board_notice_count; $k++) {
         if (trim($arr_notice[$k]) == '') continue;
 
-        $row = sql_fetch(" select * from {$write_table} where wr_id = '{$arr_notice[$k]}' ");
+        $row = sql_fetch( " select * from {$write_table} where wr_id = '{$arr_notice[$k]}' ".$sql_for_date );
 
         if (!$row['wr_id']) continue;
 
@@ -172,9 +176,9 @@ if ($sst) {
 }
 
 if ($is_search_bbs) {
-    $sql = " select distinct wr_parent from {$write_table} where {$sql_search} {$sql_order} limit {$from_record}, $page_rows ";
+    $sql = " select distinct wr_parent from {$write_table} where {$sql_search} {$sql_for_date} {$sql_order} limit {$from_record}, $page_rows ";
 } else {
-    $sql = " select * from {$write_table} where wr_is_comment = 0 ";
+    $sql = " select * from {$write_table} where wr_is_comment = 0 ".$sql_for_date;
     if(!empty($notice_array))
         $sql .= " and wr_id not in (".implode(', ', $notice_array).") ";
     $sql .= " {$sql_order} limit {$from_record}, $page_rows ";
@@ -190,7 +194,7 @@ if($page_rows > 0) {
     {
         // 검색일 경우 wr_id만 얻었으므로 다시 한행을 얻는다
         if ($is_search_bbs)
-            $row = sql_fetch(" select * from {$write_table} where wr_id = '{$row['wr_parent']}' ");
+            $row = sql_fetch(" select * from {$write_table} where wr_id = '{$row['wr_parent']}' ".$sql_for_date);
 
         $list[$i] = get_list($row, $board, $board_skin_url, G5_IS_MOBILE ? $board['bo_mobile_subject_len'] : $board['bo_subject_len']);
         if (strstr($sfl, 'subject')) {

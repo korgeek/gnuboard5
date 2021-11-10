@@ -2,11 +2,13 @@
 if (!defined('_GNUBOARD_')) exit;
 @include_once(G5_LIB_PATH.'/thumbnail.lib.php');
 
+
 // 최신글 추출
 // $cache_time 캐시 갱신시간
 function latest($skin_dir='', $bo_table, $rows=10, $subject_len=40, $cache_time=1, $options='')
 {
     global $g5;
+
 
     if (!$skin_dir) $skin_dir = 'basic';
     
@@ -55,7 +57,9 @@ function latest($skin_dir='', $bo_table, $rows=10, $subject_len=40, $cache_time=
         $bo_subject = get_text($board['bo_subject']);
 
         $tmp_write_table = $g5['write_prefix'] . $bo_table; // 게시판 테이블 전체이름
-        $sql = " select * from {$tmp_write_table} where wr_is_comment = 0 order by wr_num limit 0, {$rows} ";
+        
+        $sql_for_date = " and now() between wr_opentime and wr_closetime ";
+        $sql = " select * from {$tmp_write_table} where wr_is_comment = 0 {$sql_for_date} order by wr_num limit 0, {$rows} ";
         
         $result = sql_query($sql);
         for ($i=0; $row = sql_fetch_array($result); $i++) {
