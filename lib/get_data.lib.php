@@ -195,11 +195,31 @@ function get_board_file_db($bo_table, $wr_id, $fields='*', $add_where='', $is_ca
     }
 
     $sql = " select $fields from {$g5['board_file_table']}
-                where bo_table = '$bo_table' and wr_id = '$wr_id' $add_where order by bf_no limit 0, 1 ";
+                where bo_table = '$bo_table' and wr_id = '$wr_id' $add_where order by bf_no limit 1 ";
 
     $cache[$key] = sql_fetch($sql);
 
     return $cache[$key];
+}
+
+// 게시판 첨부파일 테이블에서 여러 행을 읽음 - jinik 2022.11.01
+function get_board_file_db_array($bo_table, $wr_id, $fields='*', $add_where='')
+{
+    global $g5;
+
+    $cache_array = array();
+
+    $wr_id = (int) $wr_id;
+
+    $sql = " select $fields from {$g5['board_file_table']} 
+        where bo_table = '$bo_table' and wr_id = '$wr_id' $add_where order by bf_no ";
+
+    $result = sql_query($sql);
+    while ($row = sql_fetch_array($result)) {
+        array_push($cache_array, $row);
+    }
+
+    return $cache_array;
 }
 
 function get_poll_db($po_id, $is_cache=false){
@@ -406,6 +426,7 @@ function get_bo_table_banned_word(){
 function get_board_sort_fields($board=array(), $make_key_return=''){
     $bo_sort_fields = run_replace('get_board_sort_fields', array(
         array('wr_num, wr_reply', '기본'),
+        array('wr_opendatetime desc', '기사 시작 날짜 최근것 부터'),
         array('wr_datetime asc', '날짜 이전것 부터'),
         array('wr_datetime desc', '날짜 최근것 부터'),
         array('wr_hit asc, wr_num, wr_reply', '조회수 낮은것 부터'),

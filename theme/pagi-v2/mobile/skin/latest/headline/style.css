@@ -1,0 +1,66 @@
+@charset "utf-8";
+
+/* 새글 스킨 (latest) */
+.latest_headline{
+	position:relative;width:100%;padding:0 10px;background:#fff;
+	margin-top:20px;
+}
+
+
+.latest_headline h1 {
+	display: inline-block;
+	margin-top: 15px;
+	margin-left: 15px;
+	margin-right: 15px;
+	margin-bottom: 5px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-left: 15px;
+	padding-right: 15px;
+	line-height:22px;
+	font-size:14px;
+	color:var(--color-impact-brown);
+	background-color: var(--color-impact-yellow);
+
+}
+
+.big_card{
+	width: 100%;
+	margin-top: 5px;
+	margin-bottom: 10px;
+	padding-left: 15px;
+	padding-right: 15px;
+}
+
+.big_card .big_card_image img{
+	width: 100%;
+}
+
+.big_card_body{
+	padding-left: 15px;
+	padding-right: 15px;
+}
+
+.big_card_body h2{
+	font-size: 26px;
+	line-height: 30px;
+	margin-bottom: 6px;
+	display: -webkit-box;
+    word-wrap: break-word;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.big_card_body .big_card_description {
+	font-size: 16px;
+	line-height: 24px;
+	display: -webkit-box;
+    word-wrap: break-word;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+

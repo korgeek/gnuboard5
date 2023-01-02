@@ -306,12 +306,29 @@ $pg_anchor = '<ul class="anchor">
                 <label for="chk_all_category_list">전체적용</label>
             </td>
         </tr>
-        <?php if ($w == 'u') { ?>
+        <?php if ($w == 'u') { 
+
+            $sql_max_cnt = " select count(*) as cnt, max(wr_id) as max from {$g5['write_prefix']}{$board['bo_table']} ";
+            $row_max_cnt = sql_fetch($sql_max_cnt);
+
+            $sql_max_cnt_legacy = " select count(*) as cnt, max(wr_id) as max from pagilegacy.{$g5['write_prefix']}{$board['bo_table']} ";
+            $row_max_cnt_legacy = sql_fetch($sql_max_cnt_legacy);
+
+            ?>
         <tr>
             <th scope="row"><label for="proc_count">카운트 조정</label></th>
             <td colspan="2">
                 <?php echo help('현재 원글수 : '.number_format($board['bo_count_write']).', 현재 댓글수 : '.number_format($board['bo_count_comment'])."\n".'게시판 목록에서 글의 번호가 맞지 않을 경우에 체크하십시오.') ?>
                 <input type="checkbox" name="proc_count" value="1" id="proc_count">
+            </td>
+        </tr>
+        <tr>
+            <th scope="row"><label for="proc_migration">게시물 마이그레이션 조정</label></th>
+            <td colspan="2">
+                <?php echo help('현재 게시물숫자 : '.number_format($row_max_cnt['cnt']).', 현재 Max ID : '.number_format($row_max_cnt['max']));?>
+                <?php echo help('레거시 게시물숫자 : '.number_format($row_max_cnt_legacy['cnt']).', 레거시 Max ID : '.number_format($row_max_cnt_legacy['max']));?>
+                <?php echo help('데이터 마이그레이션을 진행해야 할 경우에 체크하십시오.') ?>
+                <input type="checkbox" name="proc_migration" value="1" id="proc_migration">
             </td>
         </tr>
         <?php } ?>

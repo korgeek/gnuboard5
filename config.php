@@ -10,7 +10,7 @@ define('_GNUBOARD_', true);
 include_once($g5_path['path'].'/version.php');   // 설정 파일
 
 // 기본 시간대 설정
-date_default_timezone_set("Asia/Seoul");
+date_default_timezone_set("Asia/Jakarta");
 
 /********************
     경로 상수
@@ -23,8 +23,8 @@ date_default_timezone_set("Asia/Seoul");
 보안서버주소가 없다면 공란으로 두시면 되며 보안서버주소 뒤에 / 는 붙이지 않습니다.
 입력 예) https://www.domain.com:443/gnuboard5
 */
-define('G5_DOMAIN', '');
-define('G5_HTTPS_DOMAIN', '');
+define('G5_DOMAIN', 'https://www.pagi.co.id');
+define('G5_HTTPS_DOMAIN', 'https://www.pagi.co.id');
 
 // 그누보드 디버그바 설정입니다, 실제 서버운영시 false 로 설정해 주세요.
 define('G5_DEBUG', false);
@@ -176,8 +176,15 @@ define('G5_MOBILE_AGENT',   'phone|samsung|lgtel|mobile|[^A]skt|nokia|blackberry
 
 // SMTP
 // lib/mailer.lib.php 에서 사용
-define('G5_SMTP',      '127.0.0.1');
-define('G5_SMTP_PORT', '25');
+//define('G5_SMTP',      '127.0.0.1');
+//define('G5_SMTP_PORT', '25');
+
+define('G5_SMTP','smtp-relay.sendinblue.com'); //smtp서버주소
+define('G5_SMTP_PORT','587'); //smtp포트
+define('G5_SMTP_SECURE','TLS'); //프로토콜종류
+define('G5_SMTP_USER','pagi.gkbi@gmail.com'); 
+define('G5_SMTP_PW','xsmtpsib-17329d4971431bae74386c06a5b197b446bf0fd8d0a89a2482857971b8e630a4-CvGZFgj8IL14JEfR'); 
+
 
 
 /********************

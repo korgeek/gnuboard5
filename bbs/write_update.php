@@ -59,6 +59,20 @@ if (isset($_POST['wr_link2'])) {
     $wr_link2 = preg_replace("#[\\\]+$#", "", $wr_link2);
 }
 
+
+//nik-pp-20220609
+$wr_opendatetime = '';
+if (isset($_POST['wr_opendatetime'])) {
+    $wr_opendatetime = $_POST['wr_opendatetime'];
+    $wr_opendatetime = preg_replace("#[\\\]+$#", "", $wr_opendatetime);
+}
+
+$wr_enddatetime = '';
+if (isset($_POST['wr_enddatetime'])) {
+    $wr_enddatetime = $_POST['wr_enddatetime'];
+    $wr_enddatetime = preg_replace("#[\\\]+$#", "", $wr_enddatetime);
+}
+
 $msg = implode('<br>', $msg);
 if ($msg) {
     alert($msg);
@@ -290,6 +304,16 @@ if ($w == '' || $w == 'r') {
                      wr_8 = '$wr_8',
                      wr_9 = '$wr_9',
                      wr_10 = '$wr_10' ";
+
+    //nik-pp-20220609
+    if($wr_opendatetime){
+        $sql = $sql.", wr_opendatetime = '$wr_opendatetime' ";
+    }
+
+    if($wr_enddatetime){
+        $sql = $sql.", wr_enddatetime = '$wr_enddatetime' ";
+    }
+
     sql_query($sql);
 
     $wr_id = sql_insert_id();
@@ -381,6 +405,15 @@ if ($w == '' || $w == 'r') {
     if (!$is_admin)
         $sql_ip = " , wr_ip = '{$_SERVER['REMOTE_ADDR']}' ";
 
+    //nik-pp-20220609
+    $sql_ext = '';
+    if($wr_opendatetime){
+        $sql_ext = $sql_ext.", wr_opendatetime = '$wr_opendatetime' ";
+    }
+    if($wr_enddatetime){
+        $sql_ext = $sql_ext.", wr_enddatetime = '$wr_enddatetime' ";
+    }
+
     $sql = " update {$write_table}
                 set ca_name = '{$ca_name}',
                      wr_option = '{$wr_option}',
@@ -405,6 +438,7 @@ if ($w == '' || $w == 'r') {
                      wr_10= '{$wr_10}'
                      {$sql_ip}
                      {$sql_password}
+                     {$sql_ext}
               where wr_id = '{$wr['wr_id']}' ";
     sql_query($sql);
 

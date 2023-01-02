@@ -1,0 +1,39 @@
+@charset "utf-8";
+
+/* 새글 스킨 (latest) */
+.latest_hot{
+	position:relative;width:100%;background:#fff;
+}
+
+.latest_hot .hot_card_inner{
+	border-bottom: 1px solid var(--color-gray-light);
+	padding-bottom: 17px;
+	margin-bottom: 17px;
+}
+
+.latest_hot  .hot_card .hot_card_title {
+	width: calc(100% - 120px);
+	display: inline-block;
+	height: 72px;
+}
+
+.latest_hot .hot_card .hot_card_title a{
+	font-size: 14px;
+	color: var(--color-gray-text);
+	font-weight: normal;
+	line-height: 24px;
+	display: -webkit-inline-box;
+    word-wrap: break-word;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    overflow: hidden;	
+}
+
+.latest_hot .hot_card .hot_card_image{
+	float: right;
+	display: inline-block;
+}
+.latest_hot .hot_card .hot_card_image img{
+	width: 100px;
+}

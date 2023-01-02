@@ -309,12 +309,60 @@ if ($w == '') {
     $row = sql_fetch($sql);
     $bo_count_comment = $row['cnt'];
 
+
+   /*
+        레거시 마이그레이션
+    */
+    if (isset($_POST['proc_migration'])) {
+
+            $sql_max = " select max(wr_id) as max from {$g5['write_prefix']}{$board['bo_table']} ";
+            $row_max = sql_fetch($sql_max);
+            $idx_max = $row_max['max'];
+            if( empty($idx_max) ){
+                $idx_max = 0;
+            }
+
+            //레거시 게시글 복사
+            $sql_ins = " INSERT INTO {$g5['write_prefix']}{$board['bo_table']} (`wr_id`,`wr_num`,`wr_reply`,`wr_parent`,`wr_is_comment`,`wr_comment`,`wr_comment_reply`,`ca_name`,`wr_option`,`wr_subject`,`wr_content`,`wr_link1`,`wr_link2`,`wr_link1_hit`,`wr_link2_hit`,`wr_hit`,`wr_good`,`wr_nogood`,`mb_id`,`wr_password`,`wr_name`,`wr_email`,`wr_homepage`,`wr_datetime`,`wr_file`,`wr_last`,`wr_ip`,`wr_facebook_user`,`wr_twitter_user`,`wr_1`,`wr_2`,`wr_3`,`wr_4`,`wr_5`,`wr_6`,`wr_7`,`wr_8`,`wr_9`,`wr_10`) SELECT * FROM pagilegacy.{$g5['write_prefix']}{$board['bo_table']} where wr_id > {$idx_max} ";
+            sql_query($sql_ins);
+
+            //지면날짜 업데이트 - 지면 날짜 잘못 되어 있는 경우 에러 보정
+            $sql_upt = " update {$g5['write_prefix']}{$board['bo_table']} set wr_opendatetime = wr_datetime WHERE LENGTH(wr_2) <> 8 ";
+            sql_query($sql_upt);
+
+
+            //지면날짜 업데이트 - 레거시 지면날자 업데이트
+            $sql_upt = " update {$g5['write_prefix']}{$board['bo_table']} set wr_opendatetime = STR_TO_DATE(wr_2,'%Y%m%d') WHERE LENGTH(wr_2) = 8 ";
+            sql_query($sql_upt);
+
+            //새 게시물 삭제
+            $sql_new_delete = " DELETE FROM {$g5['board_new_table']} WHERE bo_table = '{$board['bo_table']}' ";
+            sql_query($sql_new_delete);
+
+            //새로운 게시물에 인서트
+            $sql_new = " INSERT INTO {$g5['board_new_table']} ( bo_table, wr_id, wr_parent, bn_datetime, mb_id ) 
+                        SELECT '{$board['bo_table']}', wr_id, wr_parent, wr_datetime, mb_id FROM pagilegacy.{$g5['write_prefix']}{$board['bo_table']} where wr_is_comment = 0 ";
+            sql_query($sql_new);
+
+            //첨부파일 삭제 필드 삭제
+            $sql_file_delete = " DELETE FROM {$g5['board_file_table']} WHERE bo_table = '{$board['bo_table']}' ";
+            sql_query($sql_file_delete);
+
+            $sql_file_insert = " INSERT INTO {$g5['board_file_table']} (`bo_table`,`bf_source`,`wr_id`,`bf_no`,`bf_file`,`bf_download`,`bf_content`,`bf_filesize`,`bf_width`,`bf_height`,`bf_type`,`bf_datetime`) select `bo_table`,`bf_source`,`wr_id`,`bf_no`,`bf_file`,`bf_download`,`bf_content`,`bf_filesize`,`bf_width`,`bf_height`,`bf_type`,`bf_datetime` from pagilegacy.{$g5['board_file_table']} where bo_table = '{$board['bo_table']}' ";
+            sql_query($sql_file_insert);
+
+    }
+
+
     // 글수 조정
     /*
         엔피씨님의 팁으로 교체합니다. 130308
         http://sir.kr/g5_tiptech/27207
     */
+
     if (isset($_POST['proc_count'])) {
+
+
         // 원글을 얻습니다.
         //$sql = " select wr_id from {$g5['write_prefix']}{$bo_table} where wr_is_comment = 0 ";
         $sql = " select a.wr_id, (count(b.wr_parent) - 1) as cnt from {$g5['write_prefix']}{$bo_table} a, {$g5['write_prefix']}{$bo_table} b where a.wr_id=b.wr_parent and a.wr_is_comment=0 group by a.wr_id ";

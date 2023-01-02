@@ -1,0 +1,72 @@
+<?php
+if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
+include_once(G5_LIB_PATH.'/thumbnail.lib.php');
+
+// add_stylesheet('css 구문', 출력순서); 숫자가 작을 수록 먼저 출력됨
+add_stylesheet('<link rel="stylesheet" href="'.$latest_skin_url.'/style.css">', 0);
+$thumb_width = 100;
+$thumb_height = 75;
+$list_count = (is_array($list) && $list) ? count($list) : 0;
+?>
+
+
+<div class="pt_story_div">
+    <ul class="pt_story_list">
+
+    <?php
+    for ($i=0; $i<$list_count; $i++) {
+        
+        if(empty($list[$i]['bo_table'])){
+            $list[$i]['bo_table'] = $bo_table;
+        }
+        $wr_href = get_pretty_url($list[$i]['bo_table'], $list[$i]['wr_id']);
+        
+    ?>
+        <li class="pt_card">
+            <div class="pt_card_body">
+
+            <?php
+                    $thumb = get_list_thumbnail($bo_table, $list[$i]['wr_id'], $thumb_width, $thumb_height, false, true);
+
+                    if($thumb['src']) {
+                        $img_content = '<a href="'.$wr_href.'" ><img src="'.$thumb['src'].'" alt="'.$thumb['alt'].'" ></a>';
+                    } else {
+                        $img_content = '<img src="'.$board_skin_url.'/img/no-pictures.png" alt="'.$thumb['alt'].'" >';
+                    }
+
+                    echo run_replace('thumb_image_tag', $img_content, $thumb);
+            
+            ?>
+
+                <h3 class="headline">
+                    <a href="<?php echo $wr_href ?>"><?php echo $list[$i]['ca_name'] ?></a>
+                </h2>
+                <h2 class="headline">
+                    <a href="<?php echo $wr_href ?>"><?php echo $list[$i]['subject'] ?>
+                    </a>
+                </h2>
+                <?php if ($is_checkbox) { ?>
+                <div class="meta">
+                    <div class="adm_input">
+                        <input type="checkbox" name="chk_wr_id[]" value="<?php echo $list[$i]['wr_id'] ?>" id="chk_wr_id_<?php echo $i ?>" class="">
+                    </div>
+                </div>
+                <?php } ?>
+            </div>
+        </li>
+
+    <?php }  ?>
+    <?php if ($list_count == 0) { //게시물이 없을 때  ?>
+    <li class="empty_li">게시물이 없습니다.</li>
+    <?php }  ?>
+
+    <?php
+    for ($i=0; $i<count($list); $i++) {
+        if ($i%2==0) $lt_class = "even";
+        else $lt_class = "";
+    ?>
+
+
+    <?php } ?>
+    </ul>
+</div>

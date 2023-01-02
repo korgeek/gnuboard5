@@ -1,4 +1,6 @@
 html, body {
+    font-family: 'Nanum Gothic', 'Malgun Gothic', dotum, sans-serif;
+    font-size:14px;
 }
 
 p {

@@ -1,0 +1,39 @@
+@charset "utf-8";
+
+/* 새글 스킨 (latest) */
+.latest_hitnews{
+	overflow: hidden;
+}
+
+.latest_hitnews li{
+	padding: 8px 0;
+	border-bottom: 1px solid #eee;
+}
+
+.latest_hitnews li:nth-child(-n+3) {
+    font-weight: 500;
+}
+
+.latest_hitnews li a {
+	color: #666;
+    display: block;
+    width: 100%;
+    line-height: 22px;
+	font-size: 14px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.square_number{
+	background-color: var(--color-impact-yellow);
+	display: inline-block;
+    width: 20px;
+    line-height: 20px;
+    font-size: 13px;
+    color: var(--color-impact-brown);
+    border-radius: 2px;
+    margin-right: 10px;
+    font-weight: 400;
+    text-align: center;
+}

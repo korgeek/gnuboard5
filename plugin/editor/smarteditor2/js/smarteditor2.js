@@ -5719,7 +5719,7 @@ nhn.husky.SE_EditingArea_WYSIWYG = jindo.$Class({
 				if(sLocale){
 					sCssUrl += "/" + sLocale;
 				}
-				sCssUrl += "/smart_editor2_in.css";
+				sCssUrl += "/smart_editor2_in.css?v2";
 
 				var doc = this.getDocument();
 				var headNode = doc.getElementsByTagName("head")[0];

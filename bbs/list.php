@@ -8,7 +8,7 @@ if ($board['bo_use_category']) {
     $is_category = true;
     $category_href = get_pretty_url($bo_table);
 
-    $category_option .= '<li><a href="'.$category_href.'"';
+    $category_option .= '<li class="swiper-slide"><a href="'.$category_href.'"';
     if ($sca=='')
         $category_option .= ' id="bo_cate_on"';
     $category_option .= '>전체</a></li>';
@@ -17,7 +17,7 @@ if ($board['bo_use_category']) {
     for ($i=0; $i<count($categories); $i++) {
         $category = trim($categories[$i]);
         if ($category=='') continue;
-        $category_option .= '<li><a href="'.(get_pretty_url($bo_table,'','sca='.urlencode($category))).'"';
+        $category_option .= '<li class="swiper-slide"><a class="ca_item" href="'.(get_pretty_url($bo_table,'','sca='.urlencode($category))).'"';
         $category_msg = '';
         if ($category==$sca) { // 현재 선택된 카테고리라면
             $category_option .= ' id="bo_cate_on"';
@@ -175,8 +175,14 @@ if ($is_search_bbs) {
     $sql = " select distinct wr_parent from {$write_table} where {$sql_search} {$sql_order} limit {$from_record}, $page_rows ";
 } else {
     $sql = " select * from {$write_table} where wr_is_comment = 0 ";
-    if(!empty($notice_array))
+    if(!empty($notice_array)){
         $sql .= " and wr_id not in (".implode(', ', $notice_array).") ";
+    }
+    if(!$is_admin){
+        $sql .= " and wr_opendatetime < now() and now() < wr_enddatetime ";
+    }
+    
+
     $sql .= " {$sql_order} limit {$from_record}, $page_rows ";
 }
 

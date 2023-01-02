@@ -1,0 +1,55 @@
+@charset "utf-8";
+
+
+.td_story_div{
+		margin-bottom: 15px;
+
+}
+
+.td_card{
+    clear: both;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    border-bottom: solid 1px var(--color-gray-light);
+}
+
+.td_card_body h2{
+    font-size: 16px;
+    line-height: 20px;
+    font-weight: normal;
+    display: inline-block;
+	width: calc(100% - 90px);
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.td_card_body h2 a:hover {
+	color: var(--color-impact-text);
+}
+
+
+.td_card_body .meta{
+	display: inline-block;
+	margin-top: 5px;
+	font-size: 13px;
+	float: right;
+}
+
+
+.td_card_body .meta .meta_cate_link{
+	float: left;
+	padding-right:  10px;
+	margin-right:  10px;
+	border-right: solid 1px var(--color-gray-text);
+}
+
+.td_card_body .meta .date{
+	float: left;
+	padding-right:  10px;
+	margin-right:  10px;
+}
+
+.td_card_body .meta .adm_input{
+	float: left;
+}

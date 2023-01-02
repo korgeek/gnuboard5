@@ -32,6 +32,16 @@ function mailer($fname, $fmail, $to, $subject, $content, $type=0, $file="", $cc=
             if(defined('G5_SMTP_PORT') && G5_SMTP_PORT)
                 $mail->Port = G5_SMTP_PORT;
         }
+
+        /*외부 SMTP 추가시작*/ 
+        if (defined('G5_SMTP_USER') && G5_SMTP_USER){
+            $mail->SMTPAuth=true; 
+            $mail->SMTPSecure=G5_SMTP_SECURE; 
+            $mail->Username=G5_SMTP_USER; 
+            $mail->Password=G5_SMTP_PW; 
+        }
+        /*외부 SMTP 추가 끝*/ 
+
         $mail->CharSet = 'UTF-8';
         $mail->From = $fmail;
         $mail->FromName = $fname;

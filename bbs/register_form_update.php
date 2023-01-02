@@ -504,6 +504,7 @@ if( $config['cf_member_img_size'] && $config['cf_member_img_width'] && $config['
 // 인증메일 발송
 if ($config['cf_use_email_certify'] && $old_email != $mb_email) {
     $subject = '['.$config['cf_title'].'] 인증확인 메일입니다.';
+    //$subject = '자카르타경제신문 PAGI 인증확인 메일입니다.';
 
     // 어떠한 회원정보도 포함되지 않은 일회용 난수를 생성하여 인증에 사용
     $mb_md5 = md5(pack('V*', rand(), rand(), rand(), rand()));
